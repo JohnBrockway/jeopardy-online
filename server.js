@@ -49,10 +49,19 @@ app.get('/get6DoubleJeopardyCategories', function(request, response) {
 
 // Endpoint to get the list of questions for a given category
 app.get('/getQuestionsForCategory', function(request, response) { 
-    var category = request.query.category;   
-    var stmt = db.prepare('SELECT * from Questions WHERE Category=?');
-    stmt.all(category, function(err, rows) {
+    var category = request.query.category;
+    var showNumber = request.query.showNumber;
+    var stmt = db.prepare('SELECT * from Questions WHERE Category=? AND ShowNumber=?');
+    stmt.all([category, showNumber], function(err, rows) {
         response.send(JSON.stringify(rows));
+    });
+});
+
+// Endpoint to get a Final Jeopardy question
+app.get('/getFinalJeopardy', function(request, response) {
+    db.all('SELECT * from Questions WHERE Round="Final Jeopardy!"', function(err, rows) {
+        var index = Math.floor(Math.random() * rows.length);
+        response.send(JSON.stringify(rows[index]));
     });
 });
 
@@ -63,27 +72,27 @@ var listener = app.listen(process.env.PORT, function() {
 
 // Helper function to consolidate logic for Single and Double Jeopardy rounds
 function getCategories(round, response) {
-    // TODO take into account show number; categories can appear in different shows
-    db.all('SELECT DISTINCT Category from Questions WHERE Round="' + round + '"', function(err, rows) {
+    var stmt = db.prepare('SELECT DISTINCT Category, ShowNumber from Questions WHERE Round=?');
+    stmt.all(round, function(err, rows) {
         // Select 6 unique indices to choose out of the full list
-        var categories = [-1, -1, -1, -1, -1, -1]; // TODO change to push
+        var categoryIndices = [];
         for (var i = 0 ; i < 6 ; ) {
-            var potentialCategory = Math.floor(Math.random() * rows.length);
+            var potentialIndex = Math.floor(Math.random() * rows.length);
             var chosenAlready = false;
             for (var j = 0 ; j < i ; j++) {
-                if (categories[j] == potentialCategory) {
+                if (categoryIndices[j] == potentialIndex) {
                     chosenAlready = true;
                     break;
                 }
             }
             if (!chosenAlready) {
-                categories[i] = potentialCategory;
+                categoryIndices.push(potentialIndex);
                 i++;
             }
         }
-        var returnCategories = ["","","","","",""]; // TODO change to push
+        var returnCategories = [];
         for (var i = 0 ; i < 6 ; i++) {
-            returnCategories[i] = rows[categories[i]];
+            returnCategories.push(rows[categoryIndices[i]]);
         }
         response.send(JSON.stringify(returnCategories));
     });
