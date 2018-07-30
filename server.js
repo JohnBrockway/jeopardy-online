@@ -11,28 +11,43 @@ var dbFile = '.data/jeopardy.db';
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database(dbFile);
 
+var createTable = require('./createTable');
+
 // if dbFile does not exist, create it
-db.serialize(function(){
+db.serialize(function() {
     if (!fs.existsSync(dbFile)) {
-        createAndFillDB();
+        createTable.createAndFillTable(db);
     }
     else {
         console.log('Database ready to go!');
     }
 });
 
+// --- GET responses ---
+
+// Endpoint to retrieve the board page
 app.get('/board', function(request, response) {
     response.sendFile(__dirname + '/views/board.html');
 });
 
+// Endpoint to get all entries in the database
+app.get('/getAllQuestions', function(request, response) {
+    db.all('SELECT * FROM Questions', function(err, rows) {
+        response.send(JSON.stringify(rows));
+    });
+});
+
+// Endpoint to get 6 unique categories for a round of Jeopardy
 app.get('/get6JeopardyCategories', function(request, response) {    
     getCategories("Jeopardy!", response);
 });
 
+// Endpoint to get 6 unique categories for a round of Double Jeopardy
 app.get('/get6DoubleJeopardyCategories', function(request, response) {    
     getCategories("Double Jeopardy!", response);
 });
 
+// Endpoint to get the list of questions for a given category
 app.get('/getQuestionsForCategory', function(request, response) { 
     var category = request.query.category;   
     var stmt = db.prepare('SELECT * from Questions WHERE Category=?');
@@ -46,44 +61,12 @@ var listener = app.listen(process.env.PORT, function() {
     console.log('Your app is listening on port ' + listener.address().port);
 });
 
-function createAndFillDB() {
-    db.run('CREATE TABLE Questions (Category TEXT, AirDate TEXT, Question TEXT, Value INTEGER, Answer TEXT, Round TEXT, ShowNumber INTEGER)');
-    console.log('New table Questions created!');
-        
-    console.log("Reading file");
-    var questions = JSON.parse(fs.readFileSync('questions/jeopardy_questions.json', 'utf8').substring(1));
-    console.log("File read");
-
-    console.log("Starting DB build");
-    // insert questions from file
-    var stmt = db.prepare('INSERT INTO Questions (Category, AirDate, Question, Value, Answer, Round, ShowNumber) VALUES (?,?,?,?,?,?,?)');
-    for (var i = 0 ; i < questions.length ; i++) {
-        var value;
-        if (questions[i].value == null) {
-            value = -1;
-        }
-        else {
-            value = questions[i].value.substring(1);
-        }
-        db.serialize(function() {
-            stmt.run([
-                questions[i].category,
-                questions[i].air_date,
-                questions[i].question,
-                value,
-                questions[i].answer,
-                questions[i].round,
-                questions[i].show_number,
-            ]);            
-        });
-    }
-    console.log("Finished DB build");
-}
-
+// Helper function to consolidate logic for Single and Double Jeopardy rounds
 function getCategories(round, response) {
+    // TODO take into account show number; categories can appear in different shows
     db.all('SELECT DISTINCT Category from Questions WHERE Round="' + round + '"', function(err, rows) {
         // Select 6 unique indices to choose out of the full list
-        var categories = [-1, -1, -1, -1, -1, -1];
+        var categories = [-1, -1, -1, -1, -1, -1]; // TODO change to push
         for (var i = 0 ; i < 6 ; ) {
             var potentialCategory = Math.floor(Math.random() * rows.length);
             var chosenAlready = false;
@@ -98,7 +81,7 @@ function getCategories(round, response) {
                 i++;
             }
         }
-        var returnCategories = ["","","","","",""];
+        var returnCategories = ["","","","","",""]; // TODO change to push
         for (var i = 0 ; i < 6 ; i++) {
             returnCategories[i] = rows[categories[i]];
         }
