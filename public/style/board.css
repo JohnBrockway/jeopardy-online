@@ -1,0 +1,41 @@
+body {
+    background-color: black;
+}
+
+ul {
+    list-style-type: none;
+    text-align: center;
+    padding: 0;
+}
+
+li {
+    float: left;
+    width: 16%;
+    margin-left: 0.3%;
+    margin-right: 0.3%;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    padding: 5px 10px;
+    height: 110px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: 4px 2px black;
+    background-color: #0100a8;
+}
+
+td {
+    height: 110px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #c28842;
+    font-size: 40px;
+    font-weight: 900;
+    text-shadow: 4px 2px black;
+    background-color: #0100a8;
+}

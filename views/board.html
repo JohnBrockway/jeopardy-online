@@ -11,11 +11,13 @@
             <li ng-repeat="category in jeopardyClues">
                 <table>
                     <thead>
-                        <tr>{{ category[0].Category }}</tr>
+                        <tr>
+                            <th>{{ category[0].Category }}</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="clue in category">
-                            <td>{{ clue.Value }}</td>
+                            <td>${{ clue.Value }}</td>
                         </tr>
                     </tbody>
                 </table>
