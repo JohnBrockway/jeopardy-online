@@ -7,12 +7,12 @@ app.controller("boardController", function ($scope, $http) {
     $scope.loadClues = function() {
         $http.get("https://jeopardy-online.glitch.me/get6JeopardyCategories").then(function(response) {
             var categories = response.data;
-            insertClues($scope.jeopardyClues, categories);
+            insertClues(categories, 1);
         });
 
         $http.get("https://jeopardy-online.glitch.me/get6DoubleJeopardyCategories").then(function(response) {
             var categories = response.data;
-            insertClues($scope.doubleJeopardyClues, categories);
+            insertClues(categories, 2);
         });
 
         $http.get("https://jeopardy-online.glitch.me/getFinalJeopardy").then(function(response) {
@@ -20,14 +20,27 @@ app.controller("boardController", function ($scope, $http) {
         });
     }
 
-    function insertClues(roundArray, categories) {
+    function insertClues(categories, round) {
         for (var i = 0; i < categories.length; i++) {
             var url = "https://jeopardy-online.glitch.me/getQuestionsForCategory?category=" + encodeURIComponent(categories[i].Category) + "&showNumber=" + categories[i].ShowNumber + "&round=" + encodeURIComponent(categories[i].Round);
             $http.get(url).then(function(response) {
                 var clues = response.data;
-                roundArray.push(clues.sort(clueComparator));
+                if (round == 1) {
+                    $scope.jeopardyClues.push(normalizeClueValues(clues, round));
+                }
+                else if (round == 2) {
+                    $scope.doubleJeopardyClues.push(normalizeClueValues(clues, round));
+                }
             });
         }
+    }
+
+    function normalizeClueValues(clues, round) {
+        clues = clues.sort(clueComparator);
+        for (var i = 1 ; i <= 5 ; i++) {
+            clues[i-1].Value = round * i * 200;
+        }
+        return clues;
     }
 
     function clueComparator(a, b) {

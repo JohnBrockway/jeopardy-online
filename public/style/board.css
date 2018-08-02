@@ -11,8 +11,7 @@ ul {
 li {
     float: left;
     width: 16%;
-    margin-left: 0.3%;
-    margin-right: 0.3%;
+    margin: 0 0.3%;
 }
 
 table {
