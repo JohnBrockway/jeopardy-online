@@ -57,8 +57,9 @@ app.get('/get6DoubleJeopardyCategories', function(request, response) {
 app.get('/getQuestionsForCategory', function(request, response) { 
     var category = request.query.category;
     var showNumber = request.query.showNumber;
-    var stmt = db.prepare('SELECT * from Questions WHERE Category=? AND ShowNumber=?');
-    stmt.all([category, showNumber], function(err, rows) {
+    var round = request.query.round;
+    var stmt = db.prepare('SELECT * from Questions WHERE Category=? AND ShowNumber=? AND Round=?');
+    stmt.all([category, showNumber, round], function(err, rows) {
         response.send(JSON.stringify(rows));
     });
 });
@@ -78,7 +79,7 @@ var listener = app.listen(process.env.PORT, function() {
 
 // Helper function to consolidate logic for Single and Double Jeopardy rounds
 function getCategories(round, response) {
-    var stmt = db.prepare('SELECT DISTINCT Category, ShowNumber from Questions WHERE Round=?');
+    var stmt = db.prepare('SELECT Category, ShowNumber, Round FROM Questions GROUP BY Category, ShowNumber, Round HAVING COUNT(*)=5 AND Round=?');
     stmt.all(round, function(err, rows) {
         // Select 6 unique indices to choose out of the full list
         var categoryIndices = [];

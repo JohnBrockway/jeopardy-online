@@ -22,7 +22,7 @@ app.controller("boardController", function ($scope, $http) {
 
     function insertClues(roundArray, categories) {
         for (var i = 0; i < categories.length; i++) {
-            var url = "https://jeopardy-online.glitch.me/getQuestionsForCategory?category=" + encodeURIComponent(categories[i].Category) + "&showNumber=" + categories[i].ShowNumber;
+            var url = "https://jeopardy-online.glitch.me/getQuestionsForCategory?category=" + encodeURIComponent(categories[i].Category) + "&showNumber=" + categories[i].ShowNumber + "&round=" + encodeURIComponent(categories[i].Round);
             $http.get(url).then(function(response) {
                 var clues = response.data;
                 roundArray.push(clues.sort(clueComparator));
