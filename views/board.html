@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="JeopardyApp" ng-controller="boardController" ng-init="loadClues()">
     <head>
-        <link rel="stylesheet" href="../style/board.css">
-        <script src="../scripts/board.js" defer></script>
+        <link rel="stylesheet" href="/style/board.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="/scripts/boardController.js" defer></script>
     </head>
     <body>
-        <h1>Board will go here</h1>
-        <p>Under construction.</p>
+        <ul>
+            <li ng-repeat="category in jeopardyClues">
+                <table>
+                    <thead>
+                        <tr>{{ category[0].Category }}</tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="clue in category">
+                            <td>{{ clue.Value }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
     </body>
 </html>
