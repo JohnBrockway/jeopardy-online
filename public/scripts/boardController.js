@@ -3,6 +3,9 @@ app.controller("boardController", function ($scope, $http) {
     $scope.jeopardyClues = [];
     $scope.doubleJeopardyClues = [];
     $scope.finalJeopardyClue = {};
+    $scope.jeopardyRound = true;
+    $scope.doubleJeopardyRound = false;
+    $scope.activeClue = null;
 
     $scope.loadClues = function() {
         $http.get("https://jeopardy-online.glitch.me/get6JeopardyCategories").then(function(response) {
@@ -18,6 +21,12 @@ app.controller("boardController", function ($scope, $http) {
         $http.get("https://jeopardy-online.glitch.me/getFinalJeopardy").then(function(response) {
             $scope.finalJeopardyClue = response.data;
         });
+    }
+
+    $scope.showClue = function(clue) {
+        $scope.jeopardyRound = false;
+        $scope.doubleJeopardyRound = false;
+        $scope.activeClue = clue;
     }
 
     function insertClues(categories, round) {

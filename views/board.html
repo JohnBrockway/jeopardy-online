@@ -7,7 +7,7 @@
         <script src="/scripts/boardController.js" defer></script>
     </head>
     <body>
-        <ul>
+        <ul ng-show="jeopardyRound" id="jeopardyBoard">
             <li ng-repeat="category in jeopardyClues">
                 <table>
                     <thead>
@@ -17,11 +17,34 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="clue in category">
-                            <td>${{ clue.Value }}</td>
+                            <td ng-click="showClue(clue)">${{ clue.Value }}</td>
                         </tr>
                     </tbody>
                 </table>
             </li>
         </ul>
+        <ul ng-show="doubleJeopardyRound" id="doubleJeopardyBoard">
+            <li ng-repeat="category in doubleJeopardyClues">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ category[0].Category }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="clue in category">
+                            <td ng-click="showClue(clue)">${{ clue.Value }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
+        <div ng-show="activeClue" id="clueScreen">
+            <div id="clueText">{{ activeClue.Clue }}</div>
+            <div id="clueInfo">
+                <p>Category: {{ activeClue.CategoryID }}</p>
+                <p>Clue: {{ activeClue.QuestionID }}</p>
+            </div>
+        </div>
     </body>
 </html>
