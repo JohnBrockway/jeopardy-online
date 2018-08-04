@@ -16,13 +16,13 @@ else if (process.argv[2] == "3") {
 else {
     console.log("Please enter a number corresponding to your current step in the process; 1, 2, or 3");
     console.log("For example, 'node createTable.js 1'");
-    console.log('1: Create tables, fill the Questions table with the JSON data (excluding CategoryID and QuestionID)');
+    console.log('1: Create tables, fill the Questions table with the JSON data (excluding CategoryID and ClueID)');
     console.log('2: Use the distinct "Category"s in the Question table to fill the Categories table, and then also fill out the CategoryID column in the Question table');
-    console.log('3: Using the knowledge of which categories are distinct, fill the QuestionID column in the Questions table');
+    console.log('3: Using the knowledge of which categories are distinct, fill the ClueID column in the Questions table');
 }
 
 function createAndFillTable() {
-    db.run('CREATE TABLE Questions (Category TEXT, AirDate TEXT, Clue TEXT, Value INTEGER, Response TEXT, Round TEXT, ShowNumber INTEGER, CategoryID INTEGER, QuestionID INTEGER)');
+    db.run('CREATE TABLE Questions (Category TEXT, CategoryID INTEGER, AirDate TEXT, Clue TEXT, ClueID INTEGER, Value INTEGER, Response TEXT, Round TEXT, ShowNumber INTEGER)');
     db.run('CREATE TABLE Categories (Category TEXT, Round TEXT, ShowNumber INTEGER, NumberQuestions INTEGER)');
     console.log('New tables Questions and Categories created!');
 
@@ -101,7 +101,7 @@ function insertQuestionIDsForCategory(questions) {
     questions = questions.sort(valueComparator);
     db.serialize(function () {
         for (var i = 0 ; i < questions.length ; i++) {
-            var stmt = db.prepare('UPDATE Questions SET QuestionID=? WHERE RowID=?');
+            var stmt = db.prepare('UPDATE Questions SET ClueID=? WHERE RowID=?');
             stmt.run([i + 1, questions[i].rowid]);
         }
     });
