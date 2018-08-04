@@ -14,7 +14,7 @@ var db = new sqlite3.Database(dbFile);
 // if dbFile does not exist, create it
 if (!fs.existsSync(dbFile)) {
     console.log('Database not ready; please refer to the createTable script (Run "node createTable.js help" to see steps)');
-    return;
+    process.exit(1);
 }
 else {
     console.log('Database ready to go!');
