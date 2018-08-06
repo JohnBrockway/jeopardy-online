@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="JeopardyApp" ng-controller="boardController" ng-init="loadClues()">
     <head>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
         <link rel="stylesheet" href="/style/board.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -17,7 +18,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="clue in category">
-                            <td ng-click="showClue(clue)">${{ clue.Value }}</td>
+                            <td ng-click="showClue(clue)" ng-show="clue.isActive">${{ clue.Value }}</td>
+                            <td ng-show="!clue.isActive"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -33,13 +35,15 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="clue in category">
-                            <td ng-click="showClue(clue)">${{ clue.Value }}</td>
+                            <td ng-click="showClue(clue)" ng-show="clue.isActive">${{ clue.Value }}</td>
+                            <td ng-show="!clue.isActive"></td>
                         </tr>
                     </tbody>
                 </table>
             </li>
         </ul>
         <div ng-show="activeClue" id="clueScreen">
+            <i class="far fa-times-circle" ng-click="closeClue(activeClue)"></i>
             <div id="clueText">{{ activeClue.Clue }}</div>
             <div id="clueInfo">
                 <p>Category: {{ activeClue.CategoryID }}</p>

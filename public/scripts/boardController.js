@@ -7,6 +7,13 @@ app.controller("boardController", function ($scope, $http) {
     $scope.doubleJeopardyRound = false;
     $scope.activeClue = null;
 
+    var round = {
+        "Jeopardy!" : 1,
+        "Double Jeopardy!": 2,
+        "Final Jeopardy!": 3
+    };
+    var currentRound = round["Jeopardy!"];
+
     $scope.loadClues = function() {
         $http.get("https://jeopardy-online.glitch.me/get6JeopardyCategories").then(function(response) {
             var categories = response.data;
@@ -29,6 +36,17 @@ app.controller("boardController", function ($scope, $http) {
         $scope.activeClue = clue;
     }
 
+    $scope.closeClue = function(clue) {
+        clue.isActive = false;
+        $scope.activeClue = null;
+        if (currentRound == round["Jeopardy!"]) {
+            $scope.jeopardyRound = true;
+        }
+        else if (currentRound == round["Double Jeopardy!"]) {
+            $scope.doubleJeopardyRound = true;
+        }
+    }
+
     function insertClues(categories, round) {
         for (var i = 0; i < categories.length; i++) {
             var url = "https://jeopardy-online.glitch.me/getQuestionsForCategory?category=" + encodeURIComponent(categories[i].rowid);
@@ -48,6 +66,7 @@ app.controller("boardController", function ($scope, $http) {
         clues = clues.sort(clueComparator);
         for (var i = 1 ; i <= 5 ; i++) {
             clues[i-1].Value = round * i * 200;
+            clues[i-1].isActive = true;
         }
         return clues;
     }
