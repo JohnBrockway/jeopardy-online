@@ -14,6 +14,7 @@ app.controller("boardController", function ($scope, $http) {
         "Final Jeopardy!": 3
     };
     var currentRound = round["Jeopardy!"];
+    var synth = window.speechSynthesis;
 
     $scope.loadClues = function() {
         $http.get(baseURL + "get6JeopardyCategories").then(function(response) {
@@ -35,6 +36,7 @@ app.controller("boardController", function ($scope, $http) {
         $scope.jeopardyRound = false;
         $scope.doubleJeopardyRound = false;
         $scope.activeClue = clue;
+        read(clue.Clue);
     }
 
     $scope.closeClue = function(clue) {
@@ -82,5 +84,13 @@ app.controller("boardController", function ($scope, $http) {
         else {
             return 0;
         }
+    }
+
+    function read(text) {
+        var voice = new SpeechSynthesisUtterance();
+        voice.text = text;
+        voice.lang = 'en-US';
+
+        synth.speak(voice);
     }
 });
