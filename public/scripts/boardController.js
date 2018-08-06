@@ -7,6 +7,7 @@ app.controller("boardController", function ($scope, $http) {
     $scope.doubleJeopardyRound = false;
     $scope.activeClue = null;
 
+    var baseURL = "https://jeopardy-online.glitch.me/";
     var round = {
         "Jeopardy!" : 1,
         "Double Jeopardy!": 2,
@@ -15,17 +16,17 @@ app.controller("boardController", function ($scope, $http) {
     var currentRound = round["Jeopardy!"];
 
     $scope.loadClues = function() {
-        $http.get("https://jeopardy-online.glitch.me/get6JeopardyCategories").then(function(response) {
+        $http.get(baseURL + "get6JeopardyCategories").then(function(response) {
             var categories = response.data;
             insertClues(categories, 1);
         });
 
-        $http.get("https://jeopardy-online.glitch.me/get6DoubleJeopardyCategories").then(function(response) {
+        $http.get(baseURL + "get6DoubleJeopardyCategories").then(function(response) {
             var categories = response.data;
             insertClues(categories, 2);
         });
 
-        $http.get("https://jeopardy-online.glitch.me/getFinalJeopardy").then(function(response) {
+        $http.get(baseURL + "getFinalJeopardy").then(function(response) {
             $scope.finalJeopardyClue = response.data;
         });
     }
@@ -49,7 +50,7 @@ app.controller("boardController", function ($scope, $http) {
 
     function insertClues(categories, round) {
         for (var i = 0; i < categories.length; i++) {
-            var url = "https://jeopardy-online.glitch.me/getQuestionsForCategory?category=" + encodeURIComponent(categories[i].rowid);
+            var url = baseURL + "getQuestionsForCategory?category=" + encodeURIComponent(categories[i].rowid);
             $http.get(url).then(function(response) {
                 var clues = response.data;
                 if (round == 1) {

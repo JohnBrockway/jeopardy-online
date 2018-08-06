@@ -16,7 +16,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>{{ category[0].Category }}</th>
+                        <th ng-bind="category[0].Category"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>{{ category[0].Category }}</th>
+                        <th ng-bind="category[0].Category"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +47,7 @@
     </ul>
     <div ng-show="activeClue" id="clueScreen">
         <i class="far fa-times-circle" ng-click="closeClue(activeClue)"></i>
-        <div id="clueText">{{ activeClue.Clue }}</div>
+        <div id="clueText" ng-bind="activeClue.Clue"></div>
         <div id="clueInfo">
             <p>Category: {{ activeClue.CategoryID }}</p>
             <p>Clue: {{ activeClue.ClueID }}</p>

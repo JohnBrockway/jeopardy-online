@@ -32,7 +32,6 @@ table {
 }
 
 th {
-    padding: 5px 10px;
     height: 110px;
     font-family: Helvetica, Arial, sans-serif;
     color: white;
@@ -88,6 +87,6 @@ td {
     font-size: 40px;
     top: 0;
     right: 0;
-    padding: 10px;
+    padding: 20px;
     cursor: pointer;
 }
