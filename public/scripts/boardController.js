@@ -1,4 +1,4 @@
-var app = angular.module("JeopardyApp", []);
+var app = angular.module("Board", []);
 app.controller("boardController", function ($scope, $http) {
     $scope.jeopardyClues = [];
     $scope.doubleJeopardyClues = [];

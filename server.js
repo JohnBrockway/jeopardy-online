@@ -28,9 +28,19 @@ app.use(function (req, res, next) {
 
 // --- GET responses ---
 
+// Redirect to a board on root page requests
+app.get('/', function (request, response) {
+    response.sendFile(__dirname + '/views/board.html');
+});
+
 // Endpoint to retrieve the board page
 app.get('/board', function (request, response) {
     response.sendFile(__dirname + '/views/board.html');
+});
+
+// Endpoint to retrieve the game master page
+app.get('/gameMaster', function (request, response) {
+    response.sendFile(__dirname + '/views/gameMaster.html');
 });
 
 // Endpoint to get all entries in the database
@@ -64,6 +74,16 @@ app.get('/getFinalJeopardy', function (request, response) {
     db.all('SELECT * from Questions WHERE Round="Final Jeopardy!"', function (err, rows) {
         var index = Math.floor(Math.random() * rows.length);
         response.send(JSON.stringify(rows[index]));
+    });
+});
+
+// Endpoint to get the answer to a specified question
+app.get('/getAnswer', function (request, response) {
+    var category = request.query.category;
+    var clue = request.query.clue;
+    var stmt = db.prepare('SELECT Response from Questions WHERE CategoryID=? AND ClueID=?');
+    stmt.all([category, clue], function (err, rows) {
+        response.send(JSON.stringify(rows));
     });
 });
 

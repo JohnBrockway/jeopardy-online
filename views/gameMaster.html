@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="GameMaster" ng-controller="gameMasterController">
+
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="/scripts/gameMasterController.js" defer></script>
+</head>
+
+<body>
+    <p>{{ $scope.answer }}</p>
+    <span>Category:
+        <input type="number" ng-model="category" />
+    </span>
+    <span>Clue:
+        <input type="number" ng-model="clue" />
+    </span>
+    <button ng-click="getAnswer()">Get Answer</button>
+</body>
+
+</html>

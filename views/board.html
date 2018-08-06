@@ -1,54 +1,58 @@
 <!DOCTYPE html>
-<html ng-app="JeopardyApp" ng-controller="boardController" ng-init="loadClues()">
-    <head>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-        <link rel="stylesheet" href="/style/board.css">
+<html ng-app="Board" ng-controller="boardController" ng-init="loadClues()">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src="/scripts/boardController.js" defer></script>
-    </head>
-    <body>
-        <ul ng-show="jeopardyRound" id="jeopardyBoard">
-            <li ng-repeat="category in jeopardyClues">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{{ category[0].Category }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="clue in category">
-                            <td ng-click="showClue(clue)" ng-show="clue.isActive">${{ clue.Value }}</td>
-                            <td ng-show="!clue.isActive"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
-        <ul ng-show="doubleJeopardyRound" id="doubleJeopardyBoard">
-            <li ng-repeat="category in doubleJeopardyClues">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{{ category[0].Category }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="clue in category">
-                            <td ng-click="showClue(clue)" ng-show="clue.isActive">${{ clue.Value }}</td>
-                            <td ng-show="!clue.isActive"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </li>
-        </ul>
-        <div ng-show="activeClue" id="clueScreen">
-            <i class="far fa-times-circle" ng-click="closeClue(activeClue)"></i>
-            <div id="clueText">{{ activeClue.Clue }}</div>
-            <div id="clueInfo">
-                <p>Category: {{ activeClue.CategoryID }}</p>
-                <p>Clue: {{ activeClue.ClueID }}</p>
-            </div>
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/board.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="/scripts/boardController.js" defer></script>
+</head>
+
+<body>
+    <ul ng-show="jeopardyRound" id="jeopardyBoard">
+        <li ng-repeat="category in jeopardyClues">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ category[0].Category }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="clue in category">
+                        <td ng-click="showClue(clue)" ng-show="clue.isActive">${{ clue.Value }}</td>
+                        <td ng-show="!clue.isActive"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+    </ul>
+    <ul ng-show="doubleJeopardyRound" id="doubleJeopardyBoard">
+        <li ng-repeat="category in doubleJeopardyClues">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ category[0].Category }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="clue in category">
+                        <td ng-click="showClue(clue)" ng-show="clue.isActive">${{ clue.Value }}</td>
+                        <td ng-show="!clue.isActive"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+    </ul>
+    <div ng-show="activeClue" id="clueScreen">
+        <i class="far fa-times-circle" ng-click="closeClue(activeClue)"></i>
+        <div id="clueText">{{ activeClue.Clue }}</div>
+        <div id="clueInfo">
+            <p>Category: {{ activeClue.CategoryID }}</p>
+            <p>Clue: {{ activeClue.ClueID }}</p>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>
