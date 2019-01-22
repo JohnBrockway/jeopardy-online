@@ -63,7 +63,7 @@ app.get('/get6DoubleJeopardyCategories', function (request, response) {
 // Endpoint to get the list of questions for a given category
 app.get('/getQuestionsForCategory', function (request, response) {
     var category = request.query.category;
-    var stmt = db.prepare('SELECT * from Questions WHERE CategoryID=?');
+    var stmt = db.prepare('SELECT * FROM Questions WHERE CategoryID=?');
     stmt.all(category, function (err, rows) {
         response.send(JSON.stringify(rows));
     });
@@ -71,7 +71,7 @@ app.get('/getQuestionsForCategory', function (request, response) {
 
 // Endpoint to get a Final Jeopardy question
 app.get('/getFinalJeopardy', function (request, response) {
-    db.all('SELECT * from Questions WHERE Round="Final Jeopardy!"', function (err, rows) {
+    db.all('SELECT * FROM Questions WHERE Round="Final Jeopardy!"', function (err, rows) {
         var index = Math.floor(Math.random() * rows.length);
         response.send(JSON.stringify(rows[index]));
     });
@@ -81,7 +81,7 @@ app.get('/getFinalJeopardy', function (request, response) {
 app.get('/getAnswer', function (request, response) {
     var category = request.query.category;
     var clue = request.query.clue;
-    var stmt = db.prepare('SELECT Response from Questions WHERE CategoryID=? AND ClueID=?');
+    var stmt = db.prepare('SELECT Response FROM Questions WHERE CategoryID=? AND ClueID=?');
     stmt.all([category, clue], function (err, rows) {
         response.send(JSON.stringify(rows));
     });
