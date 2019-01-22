@@ -14,7 +14,8 @@
     <table>
         <tbody>
             <tr>
-                <td ng-bind="answer"></td>
+                <td ng-bind="answer" ng-show="!awaiting"></td>
+                <td ng-show="awaiting"><i class="fas fa-circle-notch fa-spin"></i></td>
             </tr>
             <tr>
                 <td>
